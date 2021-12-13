@@ -24,8 +24,8 @@ class UserRepository {
 
             });
         } catch (error) {
-            logError('There was an error connecting to database', this.logContext, error)
-            throw error;
+            logError('There was an error connecting to database', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -58,7 +58,8 @@ class UserRepository {
             logInfo(' createUser() - queryResult[0]', this.logContext, queryResult[0])
             return queryResult[0]
         } catch (error) {
-            logError('There was an error in createUser()', this.logContext, error)
+            logError('There was an error in createUser()', this.logContext, error);
+            throw new Error(error.message);
 
         }
     }
@@ -88,7 +89,8 @@ class UserRepository {
             return queryResult[0].user[0]
 
         } catch (error) {
-            logError('There was an error in loginUser()', this.logContext, error)
+            logError('There was an error in loginUser()', this.logContext, error);
+            throw new Error(error.message);
 
         }
     }
@@ -118,7 +120,8 @@ class UserRepository {
             return queryResult[0].user[0]
 
         } catch (error) {
-            logError('There was an error in loginUser()', this.logContext, error)
+            logError('There was an error in loginUser()', this.logContext, error);
+            throw new Error(error.message);
 
         }
     }
@@ -171,7 +174,8 @@ class UserRepository {
             logInfo('updateInitInvestment() - queryResult1[0].initialInvestment', this.logContext, queryResult1[0].initialInvestment)
             return queryResult1[0].initialInvestment
         } catch (error) {
-            logError('There was an error in updateInitInvestment()', this.logContext, error)
+            logError('There was an error in updateInitInvestment()', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -222,7 +226,8 @@ class UserRepository {
             logInfo('resetInitInvestment() - queryResult[0].initialInvestment', this.logContext, queryResult[0].initialInvestment)
             return queryResult[0].initialInvestment
         } catch (error) {
-            logError('There was an error in resetInitInvestment()', this.logContext, error)
+            logError('There was an error in resetInitInvestment()', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -246,7 +251,8 @@ class UserRepository {
             logInfo('getAllInvestments() - queryResult[0]', this.logContext, queryResult[0])
             return queryResult[0];
         } catch (error) {
-            logError('There was an error in getAllInvestments()', this.logContext, error)
+            logError('There was an error in getAllInvestments()', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -261,7 +267,8 @@ class UserRepository {
             logInfo('getInitInvestment() - queryResult[0].init_investment', this.logContext, queryResult[0].init_investment)
             return queryResult[0].init_investment
         } catch (error) {
-            logError('There was an error in getInitInvestment()', this.logContext, error)
+            logError('There was an error in getInitInvestment()', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -277,7 +284,8 @@ class UserRepository {
             logInfo('getTotalShares() - queryResult', this.logContext, queryResult)
             return queryResult
         } catch (error) {
-            logError('There was an error in getTotalShares()', this.logContext, error)
+            logError('There was an error in getTotalShares()', this.logContext, error);
+            throw new Error(error.message);
         }
     }
 
@@ -292,6 +300,8 @@ class UserRepository {
             logInfo('saveProfit() - queryResult[0].totalProfit', this.logContext, queryResult[0].totalProfit)
             return queryResult[0].totalProfit
         } catch (error) {
+            logError('ERROR from saveProfit()', this.logContext, error);
+            throw new Error(error.message)
             
         }
     }
@@ -306,11 +316,12 @@ class UserRepository {
             logInfo('getStockSymbols() - queryResult', this.logContext, queryResult)
             return queryResult
         } catch (error) {
-            logError('ERROR from getStockSymbol()', this.logContext, error)
+            logError('ERROR from getStockSymbol()', this.logContext, error);
+            throw new Error(error.message)
         }
     }
-
-    //if returning more than 1 row use queryResult else use queryResult[0]
+    
+     //if returning more than 1 row use queryResult else use queryResult[0]
     // async getStockSymbols(): Promise<any> {
     //     try {
                 // let query = ``
