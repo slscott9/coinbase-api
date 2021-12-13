@@ -38,34 +38,34 @@ class CoinbaseService {
         let currentPrices: any[] = [];
   
         if (userInvestments) {
-          for (let investment of userInvestments) {
-            let response = await this.apiRepo.apiGetRequest(`https://api.coinbase.com/v2/prices/${investment.ticker_symbol}-USD/buy`)
-            currentPrices.push(
-              {
-                tickerSymbol: response.data.base,
-                price: response.data.amount
-              }
-            )
-          }
+          currentPrices = await this.formatCurrentPrices(userInvestments)
         } else {
           let tickerSymbols = await this.userRepo.getStockSymbols(userId);
-  
-          for (let symbols of tickerSymbols) {
-            let response = await this.apiRepo.apiGetRequest(`https://api.coinbase.com/v2/prices/${symbols.ticker_symbol}-USD/buy`)
-            currentPrices.push(
-              {
-                tickerSymbol: response.data.base,
-                price: response.data.amount
-              }
-            )
-          }
+          currentPrices = await this.formatCurrentPrices(tickerSymbols);
         }
+
         logInfo('getCurrentPrices() - returning currentPrices', this.logContext, currentPrices)
         return currentPrices;
       } catch (error) {
         logError('Error in getCurrentPrices()', this.logContext, error);
         throw new Error(error.message);
       }
+    }
+
+    private async formatCurrentPrices(tickerSymbols: any[]): Promise<any> {
+      let currentPrices: any[] = [];
+
+      for (let symbols of tickerSymbols) {
+        let response = await this.apiRepo.apiGetRequest(`https://api.coinbase.com/v2/prices/${symbols.ticker_symbol}-USD/buy`)
+        currentPrices.push(
+          {
+            tickerSymbol: response.data.base,
+            price: response.data.amount
+          }
+        )
+      }
+
+      return currentPrices;
     }
 }
 
