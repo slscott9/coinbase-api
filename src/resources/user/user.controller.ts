@@ -89,6 +89,7 @@ class UserController implements Controller {
             let initialInvestment = await this.userService.getUserInitInvestment(req.body.userId);
             res.status(200).send({initialInvestment: initialInvestment})
         } catch (error) {
+            next(new HttpException(400, error.message));
         }
     }
 
@@ -102,7 +103,9 @@ class UserController implements Controller {
             logInfo('Response from getAllInvestments()', this.logContext, JSON.stringify(investments))
             res.status(200).send(investments)
         } catch (error) {
-            logInfo('Error from getAllInvestments', this.logContext, error)
+            logInfo('Error from getAllInvestments', this.logContext, error);
+            next(new HttpException(400, error.message));
+
         }
     }
 
@@ -117,13 +120,15 @@ class UserController implements Controller {
             if(req.body.isUpdate){
                 initialInvestment = await this.userService.updateInitInvestment(req.body.userId, req.body.investments);
             }else{
-                initialInvestment = await this.userService.resetInvestment(req.body.userId, req.body.investments)
+                initialInvestment = await this.userService.resetInitInvestment(req.body.userId, req.body.investments)
             }
 
             logInfo('Returning request from calculateInitInvestment()', this.logContext, {initialInvestment: initialInvestment})
             res.status(200).send({initialInvestment: initialInvestment})
         } catch (error) {
-            logError('Error from calculateInitInvestment()', this.logContext, error)
+            logError('Error from calculateInitInvestment()', this.logContext, error);
+            next(new HttpException(400, error.message));
+
         }
     }
 
@@ -137,7 +142,8 @@ class UserController implements Controller {
             logInfo('Returning request from saveTotalProfit()', this.logContext, {totalProfit: totalProfit})
             res.status(200).send({totalProfit: totalProfit})
         } catch (error) {
-            logError('Error from saveTotalProfit()', this.logContext, error)
+            logError('Error from saveTotalProfit()', this.logContext, error);
+            next(new HttpException(400, error.message));
         }
     }
 
