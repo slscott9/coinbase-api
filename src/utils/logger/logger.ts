@@ -1,30 +1,30 @@
 
 export const logInfo = (message: string, context: string, data?: any) => {
     console.info({
-        message, logLevel: 'INFO', context, data
+        context, message, logLevel: 'INFO', data
     })
 }
 
 export const logAudit = (message: string, context: string, data?: any) => {
     console.info({
-        message, logLevel: 'AUDIT', context, data
+        context, message, logLevel: 'AUDIT', data
     })
 }
 
 export const logWarn = (message: string, context: string, data?: any) => {
     console.info({
-        message, logLevel: 'WARN', context, data
+        context, message, logLevel: 'WARN', data
     })
 }
 
 export const logError = (message: string, context: string, data?: any) => {
     console.info({
-        message, logLevel: 'ERROR', context, data
+        context, message, logLevel: 'ERROR', data
     })
 }
 
 export const logDebug = (message: string, context: string, data?: any) => {
     console.info({
-        message, logLevel: 'DEBUG', context, data
+        context, message, logLevel: 'DEBUG', data
     })
 }

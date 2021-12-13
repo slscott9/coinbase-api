@@ -1,5 +1,6 @@
+import HttpException from "@/utils/exceptions/http.exception";
 import Controller from "@/utils/interface/controller.interface";
-import { logError } from "@/utils/logger/logger";
+import { logError, logInfo } from "@/utils/logger/logger";
 import { NextFunction, Router, Request, Response } from "express";
 import UserRepository from "../user/user.repository";
 import CoinbaseService from "./coinbase.service";
@@ -36,10 +37,12 @@ class CoinbaseController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('currentPriceTotals() - incoming request', this.logContext, req.body)
             let currentPriceTotals = await this.service.currentPriceTotals(req.body.userId)
             res.status(200).send({currentPriceTotals: currentPriceTotals})
         } catch (error) {
-            logError('Error in currentPriceTotals()', this.logContext, error)
+            logError('Error in currentPriceTotals()', this.logContext, error);
+            next(new HttpException(400, error.message));
         }
     }
 
@@ -49,11 +52,12 @@ class CoinbaseController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-
+            logInfo('currentPriceTotals() - incoming request', this.logContext, req.body)
             let currentPrices = await this.service.getCurrentPrices(req.body.userId, undefined)
             res.status(200).send({currentPrices: currentPrices})
         } catch (error) {
-            logError('Error in getCurrentPrices()', this.logContext, error)
+            logError('Error in getCurrentPrices()', this.logContext, error);
+            next(new HttpException(400, error.message));
         }
     }
 

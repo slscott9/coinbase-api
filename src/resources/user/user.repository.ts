@@ -55,7 +55,7 @@ class UserRepository {
                     requestBody.password
                 ]
             );
-            logInfo('queryResult[0] from createUser()', this.logContext, queryResult[0])
+            logInfo(' createUser() - queryResult[0]', this.logContext, queryResult[0])
             return queryResult[0]
         } catch (error) {
             logError('There was an error in createUser()', this.logContext, error)
@@ -84,6 +84,7 @@ class UserRepository {
                             where u.email = $1`
 
             let queryResult = await this.db.any(userInsert, email);
+            logInfo('getUser() - queryResult[0].user[0]', this.logContext, queryResult[0].user[0])
             return queryResult[0].user[0]
 
         } catch (error) {
@@ -113,7 +114,7 @@ class UserRepository {
                             where u.user_id = $1`
 
             let queryResult = await this.db.any(userInsert, userId);
-            logInfo('returning user from getUserId', this.logContext, queryResult[0].user[0])
+            logInfo('getUserById() - returning user', this.logContext, queryResult[0].user[0])
             return queryResult[0].user[0]
 
         } catch (error) {
@@ -167,7 +168,7 @@ class UserRepository {
                 )
             });
 
-            logInfo('queryResult1[0] from updateInitInvestment()', this.logContext, queryResult1[0])
+            logInfo('updateInitInvestment() - queryResult1[0].initialInvestment', this.logContext, queryResult1[0].initialInvestment)
             return queryResult1[0].initialInvestment
         } catch (error) {
             logError('There was an error in updateInitInvestment()', this.logContext, error)
@@ -218,7 +219,7 @@ class UserRepository {
                 )
             });
 
-            logInfo('queryResult[0] from resetInitInvestment()', this.logContext, queryResult[0])
+            logInfo('resetInitInvestment() - queryResult[0].initialInvestment', this.logContext, queryResult[0].initialInvestment)
             return queryResult[0].initialInvestment
         } catch (error) {
             logError('There was an error in resetInitInvestment()', this.logContext, error)
@@ -242,7 +243,7 @@ class UserRepository {
             from coinbase.user_initial_inv_info uiii where user_id = ($1)`
 
             let queryResult = await this.db.any(query, [userId])
-            logInfo('queryResult[0] from getAllInvestments()', this.logContext, queryResult[0])
+            logInfo('getAllInvestments() - queryResult[0]', this.logContext, queryResult[0])
             return queryResult[0];
         } catch (error) {
             logError('There was an error in getAllInvestments()', this.logContext, error)
@@ -257,7 +258,7 @@ class UserRepository {
                                 where u.user_id = ($1)`
 
             let queryResult = await this.db.any(query, [userId]);
-            logInfo('queryResult[0] from getInitInvestment()', this.logContext, queryResult[0])
+            logInfo('getInitInvestment() - queryResult[0].init_investment', this.logContext, queryResult[0].init_investment)
             return queryResult[0].init_investment
         } catch (error) {
             logError('There was an error in getInitInvestment()', this.logContext, error)
@@ -273,7 +274,7 @@ class UserRepository {
                         group by ticker_symbol`
 
             let queryResult = await this.db.any(query, userId);
-            logInfo('queryResult from getTotalShares()', this.logContext, queryResult)
+            logInfo('getTotalShares() - queryResult', this.logContext, queryResult)
             return queryResult
         } catch (error) {
             logError('There was an error in getTotalShares()', this.logContext, error)
@@ -288,7 +289,7 @@ class UserRepository {
                          returning total_profit as "totalProfit"`
             
             let queryResult = await this.db.any(query, [totalProfit, userId])
-            logInfo('queryResult[0] from saveProfit()', this.logContext, queryResult[0])
+            logInfo('saveProfit() - queryResult[0].totalProfit', this.logContext, queryResult[0].totalProfit)
             return queryResult[0].totalProfit
         } catch (error) {
             
@@ -302,9 +303,10 @@ class UserRepository {
                          group by ticker_symbol`
             
             let queryResult = await this.db.any(query, userId);
+            logInfo('getStockSymbols() - queryResult', this.logContext, queryResult)
             return queryResult
         } catch (error) {
-            logError('Error from getStockSymbol()', this.logContext, error)
+            logError('ERROR from getStockSymbol()', this.logContext, error)
         }
     }
 

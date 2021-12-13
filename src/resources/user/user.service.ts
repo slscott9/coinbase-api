@@ -26,13 +26,13 @@ class UserService {
                 token:accessToken
             }
 
-            logInfo('Returning userResponse from register()', this.logContext, userResponse)
+            logInfo('register() - returning userResponse', this.logContext, userResponse)
             return userResponse;
         } catch (error) {
             logError('Error from createUser()', this.logContext, error)
+            throw new Error('Error registering user.')
         }
     }
-
 
     public async loginUser(email: string, password: string ): Promise<any> {
         try {
@@ -60,10 +60,12 @@ class UserService {
 
     public async getUserInitInvestment(userId: number): Promise<number> {
         try {
-            return this.userRepo.getInitInvestment(userId)
+            let initialInvestment = await this.userRepo.getInitInvestment(userId);
+            logInfo('getUserInitInvestment() - returning initialInvestment', this.logContext, initialInvestment);
+            return initialInvestment;
         } catch (error) {
             logError('Error from getUserInitInvestment()', this.logContext, error)
-            throw new Error('Error retrieving initial investment.')
+            throw new Error(error.message);
         }
     }
 
@@ -71,10 +73,11 @@ class UserService {
         try {
             let totalInvestment: number = await this.calculateTotalInvestment(investments)
             let initialInvestment = await this.userRepo.updateInitInvestments(userId, investments, totalInvestment);
+            logInfo('updateInitInvestment() - returning initialInvestment', this.logContext, initialInvestment);
             return initialInvestment
         } catch (error) {
             logError('Error from updateInitInvestment', this.logContext, error)
-            throw new Error('Error updating initial investment.')
+            throw new Error(error.message);
         }
     }
 
@@ -82,10 +85,11 @@ class UserService {
         try {
             let totalInvestment: number = await this.calculateTotalInvestment(investments)
             let initialInvestment = await this.userRepo.resetInitInvestments(userId, investments, totalInvestment);
+            logInfo('resetInitInvestment() - returning initialInvestment', this.logContext, initialInvestment);
             return initialInvestment
         } catch (error) {
             logError('Error from resetInvestment()', this.logContext, error)
-            throw new Error('Error resetting initial investment.')
+            throw new Error(error.message);
         }
     }
 
@@ -97,28 +101,29 @@ class UserService {
                 totalInvestment += investment.totalInvestment
             }
         }
-        logInfo('Returing totalInvestment from calculateTotalInvestment()', this.logContext, totalInvestment)
+        logInfo('calculateTotalInvestment() - returing totalInvestment', this.logContext, totalInvestment)
         return totalInvestment;
     }
 
     public async getAllInvestments(userId: number): Promise<Investment[]> {
         try {
-            logInfo('User id from getAllInvestments', this.logContext, userId)
-            let investments: Investment[] = await this.userRepo.getAllInvestments(userId)
+            let investments: Investment[] = await this.userRepo.getAllInvestments(userId);
+            logInfo('getAllInvestments() - returning investments', this.logContext, investments)
             return investments
         } catch (error) {
             logError('Error from getAllInvestments()', this.logContext, error);
-            throw new Error('Error getting all investments.')
+            throw new Error(error.message);
         }
     }
 
     public async saveTotalProfit(userId: number, totalProfit: number): Promise<number> {
         try {
-            let totalProfitResult: number = await this.userRepo.saveProfit(userId, totalProfit)
+            let totalProfitResult: number = await this.userRepo.saveProfit(userId, totalProfit);
+            logInfo('saveTotalProfit() - returning totalProfitResult', this.logContext, totalProfitResult);
             return totalProfitResult
         } catch (error) {
             logError('Error from saveTotalProfit()', this.logContext, error);
-            throw new Error('Error saving profit.')
+            throw new Error(error.message);
         }
     }
 

@@ -60,6 +60,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('register() - incoming request', this.logContext, req.body)
             let userResponse: any = await this.userService.register(req.body);
             res.status(200).send(userResponse)
         } catch (error) {
@@ -73,6 +74,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('loginUser() - incoming request', this.logContext, req.body)
             let response = await this.userService.loginUser(req.body.email, req.body.password);
             res.status(200).send(response)
         } catch (error) {
@@ -86,6 +88,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('getUserInitInvestment() - incoming request', this.logContext, req.body)
             let initialInvestment = await this.userService.getUserInitInvestment(req.body.userId);
             res.status(200).send({initialInvestment: initialInvestment})
         } catch (error) {
@@ -99,6 +102,7 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('getAllInvestments() - incoming request', this.logContext, req.body)
             let investments: Investment[] = await this.userService.getAllInvestments(req.body.userId);
             logInfo('Response from getAllInvestments()', this.logContext, JSON.stringify(investments))
             res.status(200).send(investments)
@@ -138,8 +142,8 @@ class UserController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
+            logInfo('saveTotalProfit() - incoming request', this.logContext, req.body)
             let totalProfit = await this.userService.saveTotalProfit(req.body.userId, req.body.totalProfit)
-            logInfo('Returning request from saveTotalProfit()', this.logContext, {totalProfit: totalProfit})
             res.status(200).send({totalProfit: totalProfit})
         } catch (error) {
             logError('Error from saveTotalProfit()', this.logContext, error);

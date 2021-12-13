@@ -25,10 +25,11 @@ class CoinbaseService {
           }
         }
   
-        logInfo('totalCurrentPrices from currentPriceTotals()', this.logContext, totalCurrentPrices)
+        logInfo('currentPriceTotals() - returing totalCurrentPrices', this.logContext, totalCurrentPrices)
         return totalCurrentPrices
       } catch (error) {
-        logError('Error in currentPriceTotals()', this.logContext, error)
+        logError('Error in currentPriceTotals()', this.logContext, error);
+        throw new Error(error.message);
       }
     }
   
@@ -39,7 +40,6 @@ class CoinbaseService {
         if (userInvestments) {
           for (let investment of userInvestments) {
             let response = await this.apiRepo.apiGetRequest(`https://api.coinbase.com/v2/prices/${investment.ticker_symbol}-USD/buy`)
-            logInfo('Resp from if() coinbase api reqest for current prices', this.logContext, response)
             currentPrices.push(
               {
                 tickerSymbol: response.data.base,
@@ -52,7 +52,6 @@ class CoinbaseService {
   
           for (let symbols of tickerSymbols) {
             let response = await this.apiRepo.apiGetRequest(`https://api.coinbase.com/v2/prices/${symbols.ticker_symbol}-USD/buy`)
-            logInfo('Resp from else() coinbase api reqest for current prices', this.logContext, response)
             currentPrices.push(
               {
                 tickerSymbol: response.data.base,
@@ -61,13 +60,13 @@ class CoinbaseService {
             )
           }
         }
-        logInfo('return value from getCurrentPrices()', this.logContext, currentPrices)
+        logInfo('getCurrentPrices() - returning currentPrices', this.logContext, currentPrices)
         return currentPrices;
       } catch (error) {
-        logError('Error in getCurrentPrices()', this.logContext, error)
+        logError('Error in getCurrentPrices()', this.logContext, error);
+        throw new Error(error.message);
       }
     }
-
 }
 
 export default CoinbaseService
