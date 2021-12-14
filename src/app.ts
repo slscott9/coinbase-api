@@ -9,12 +9,14 @@ import Controller from './utils/interface/controller.interface';
 class App {
     public express: Application;
     public port: number;
+    public baseUrl: string;
 
     constructor(
-        controllers: Controller[], port: number
+        controllers: Controller[], port: number, baseUrl: string
     ) {
         this.express = express();
         this.port = port;
+        this.baseUrl = baseUrl;
         this.initMiddleware();
         this.initControllers(controllers);
         this.initErrorHandling();
@@ -45,7 +47,7 @@ class App {
     }
 
     public listen(): void {
-        this.express.listen(this.port, () => {
+        this.express.listen(this.port, this.baseUrl, () => {
             console.log(`App listening on the port ${this.port}`);
         });
     }
