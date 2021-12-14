@@ -13,7 +13,7 @@ import validateEnv from "./utils/validateEnv";
  
  const app = new App(
      [ new CoinbaseController(userRepo), new UserController(userRepo)],
-     Number(process.env.PORT)
+     Number(process.env.PORT), process.env.BASE_URL
  );
  
  app.listen();
